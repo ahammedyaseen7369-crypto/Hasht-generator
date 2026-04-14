@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Content AI Pro</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* MAIN APP */
+    .main {
+      flex: 3;
+      padding: 30px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      padding: 12px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    input {
+      width: 80%;
+      max-width: 360px;
+    }
+
+    button {
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .copy-btn {
+      background: #3b82f6;
+    }
+
+    #output {
+      margin-top: 25px;
+      font-size: 18px;
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 500px;
+      text-align: left;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #93c5fd;
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* ADS SIDEBAR */
+    .ads {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-left: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .ad-box {
+      height: 250px;
+      background: rgba(0,0,0,0.4);
+      margin-bottom: 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .ads {
+        border-left: none;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- MAIN TOOL -->
+<div class="main">
+
+  <h1>🚀 Smart Content AI Pro</h1>
+
+  <input type="text" id="content" placeholder="Type your content...">
+
+  <br>
+
+  <select id="emotion">
+    <option value="auto">Auto Detect</option>
+    <option value="normal">Normal</option>
+    <option value="luxury">Luxury 💎</option>
+    <option value="funny">Funny 😂</option>
+    <option value="horror">Horror 👻</option>
+    <option value="sad">Sad 😢</option>
+  </select>
+
+  <br>
+
+  <button onclick="generate()">Generate</button>
+
+  <div id="output"></div>
+
+  <br>
+
+  <button class="copy-btn" onclick="copyText()">Copy</button>
+
+</div>
+
+<!-- ADS SIDEBAR -->
+<div class="ads">
+
+  <!-- 🔥 AD SLOT 1 -->
+  <div class="ad-box">
+    🔥 Ad Slot 1<br>
+    Replace this with Google AdSense code
+  </div>
+
+  <!-- 🔥 AD SLOT 2 -->
+  <div class="ad-box">
+    📢 Ad Slot 2<br>
+    Affiliate / Banner / Sponsor
+  </div>
+
+</div>
+
+<script>
+
+// 🧠 CLEAN FUNCTION
+function cleanText(text) {
+  text = text.toLowerCase();
+
+  let fixes = {
+    "freind": "friend",
+    "freinds": "friends",
+    "on india": "in India",
+    "i show speed": "IShowSpeed"
+  };
+
+  for(let wrong in fixes) {
+    text = text.replace(new RegExp(wrong, "gi"), fixes[wrong]);
+  }
+
+  text = text.replace(/\(.*?\)/g, "");
+  text = text.replace(/\s+/g, " ").trim();
+
+  return text;
+}
+
+// 🎯 CAPTION ENGINE
+function generateCaption(content, emotion) {
+
+  let base = [];
+
+  if(emotion === "horror") {
+    base = [
+      `Dark mystery behind ${content} 👻`,
+      `Something terrifying about ${content} 😨`,
+      `You shouldn't ignore ${content}`
+    ];
+  }
+
+  else if(emotion === "funny") {
+    base = [
+      `${content} but make it funny 😂`,
+      `Nobody expected this ${content} 😜`
+    ];
+  }
+
+  else if(emotion === "luxury") {
+    base = [
+      `Premium experience of ${content} 💎`,
+      `Luxury redefined with ${content} ✨`
+    ];
+  }
+
+  else if(emotion === "sad") {
+    base = [
+      `A emotional moment of ${content} 😢`,
+      `This ${content} will touch your heart 💔`
+    ];
+  }
+
+  else {
+    base = [
+      `Discover ${content} everyone is talking about 💯`,
+      `${content} is trending right now 🔥`
+    ];
+  }
+
+  return base[Math.floor(Math.random() * base.length)];
+}
+
+// #️⃣ HASHTAGS
+function generateHashtags(content, emotion) {
+
+  let words = content.split(" ").filter(w => w.length > 2);
+
+  let baseTags = words.slice(0,2).map(w => "#" + w);
+
+  let tags = {
+    horror: ["#horror","#scary","#ghost","#dark","#fear"],
+    funny: ["#funny","#memes","#viral","#lol"],
+    luxury: ["#luxury","#premium","#style","#rich"],
+    sad: ["#sad","#emotional","#heartbreak","#story"],
+    normal: ["#instagood","#viral","#trending","#explorepage","#reels"]
+  };
+
+  let extras = tags[emotion] || tags.normal;
+
+  let all = [...baseTags, ...extras];
+  let unique = [...new Set(all)];
+
+  return unique.slice(0, 10).join(" ");
+}
+
+// 🚀 GENERATE
+function generate() {
+  let content = document.getElementById("content").value;
+  let emotion = document.getElementById("emotion").value;
+
+  if(content.trim() === "") {
+    alert("Please type something!");
+    return;
+  }
+
+  content = cleanText(content);
+
+  let caption = generateCaption(content, emotion);
+  let hashtags = generateHashtags(content, emotion);
+
+  document.getElementById("output").innerHTML = `
+    <span class="label">Caption</span>
+    <p>${caption}</p>
+
+    <span class="label">Hashtags</span>
+    <p>${hashtags}</p>
+  `;
+}
+
+// 📋 COPY
+function copyText() {
+  navigator.clipboard.writeText(document.getElementById("output").innerText);
+  alert("Copied!");
+}
+
+</script>
+
+</body>
+</html>
